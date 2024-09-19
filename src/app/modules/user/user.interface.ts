@@ -1,6 +1,6 @@
 interface IUser {
   userId: number;
-  username: string;
+  userName: string;
   password: string;
   fullName: {
     firstName: string;
