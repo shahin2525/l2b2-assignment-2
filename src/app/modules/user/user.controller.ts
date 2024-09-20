@@ -38,8 +38,64 @@ const getAllUsers = async (req: Request, res: Response) => {
     });
   }
 };
+const getSingleUser = async (req: Request, res: Response) => {
+  try {
+    const userId = Number(req.params.userId);
+    const result = await UserServices.getSingleUserIntoDB(userId);
+    res.status(201).json({
+      success: true,
+      message: 'single user get successfully',
+      data: result,
+    });
+  } catch (err: any) {
+    res.status(501).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: err,
+    });
+  }
+};
+const updateUser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    console.log(userId);
+    // const result =
+    await UserServices.UpdateUserIntoDB(userId);
+    res.status(201).json({
+      success: true,
+      message: ' user updated successfully',
+      data: userId,
+    });
+  } catch (err: any) {
+    res.status(501).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: err,
+    });
+  }
+};
+const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const userId = req.body;
+    await UserServices.deleteUserIntoDB(userId);
+    res.status(201).json({
+      success: true,
+      message: ' user deleted successfully',
+      data: null,
+    });
+  } catch (err: any) {
+    res.status(501).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: err,
+    });
+  }
+};
 
 export const UserController = {
   createUser,
   getAllUsers,
+  getSingleUser,
+  updateUser,
+  deleteUser,
 };

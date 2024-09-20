@@ -6,19 +6,19 @@ const createUserIntoDB = async (user: IUser) => {
   return result;
 };
 const getAllUsersIntoDB = async () => {
-  const result = User.find();
+  const result = User.find().select('-password');
   return result;
 };
-const getSingleUserIntoDB = async (id: number) => {
-  const result = User.findById(id);
+const getSingleUserIntoDB = async (userId: number) => {
+  const result = User.findOne({ userId }).select('-password');
   return result;
 };
-const deleteUserIntoDB = async (id: number) => {
+const deleteUserIntoDB = async (id: string) => {
   const result = User.findByIdAndDelete(id);
   return result;
 };
-const UpdateUserIntoDB = async (id: number) => {
-  const result = User.findByIdAndUpdate(id);
+const UpdateUserIntoDB = async (id: string) => {
+  const result = User.findByIdAndUpdate(id).select('-password');
   return result;
 };
 
