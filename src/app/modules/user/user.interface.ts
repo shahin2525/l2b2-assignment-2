@@ -1,3 +1,5 @@
+import { Model } from 'mongoose';
+
 interface IUser {
   userId: number;
   userName: string;
@@ -18,4 +20,9 @@ interface IUser {
   orders?: [{ productName: string; price: number; quantity: number }];
 }
 
+export type IUserMethods = {
+  isUserExists(userId: number): Promise<IUser | null>;
+};
+
+export type UserModel = Model<IUser, Record<string, never>, IUserMethods>;
 export default IUser;

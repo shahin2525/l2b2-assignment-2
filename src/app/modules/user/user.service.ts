@@ -1,8 +1,13 @@
 import IUser from './user.interface';
 import User from './user.model';
 
-const createUserIntoDB = async (user: IUser) => {
-  const result = await User.create(user);
+const createUserIntoDB = async (userData: IUser) => {
+  // const result = await User.create(user);
+  const user = new User(userData);
+  if (await user.isUserExists(userData.userId)) {
+    throw new Error('user is already exists');
+  }
+  const result = await user.save();
   return result;
 };
 const getAllUsersIntoDB = async () => {
