@@ -41,6 +41,7 @@ const getAllUsers = async (req: Request, res: Response) => {
 const getSingleUser = async (req: Request, res: Response) => {
   try {
     const userId = Number(req.params.userId);
+
     const result = await UserServices.getSingleUserIntoDB(userId);
     res.status(201).json({
       success: true,

@@ -15,14 +15,14 @@ const createUserIntoDB = async (userData: IUser) => {
   return result;
 };
 const getAllUsersIntoDB = async () => {
-  const result = User.find().select('-password');
+  const result = await User.find().select('-password');
   return result;
 };
 const getSingleUserIntoDB = async (userId: number) => {
-  if (await User.isUserExists(userId)) {
-    throw new Error('id does not exists');
-  }
-  const result = User.findOne({ userId }).select('-password');
+  // if (await User.isUserExists(userId)) {
+  //   throw new Error('user not exists');
+  // }
+  const result = await User.findOne({ userId }).select('-password');
   return result;
 };
 const deleteUserIntoDB = async (id: string) => {
