@@ -19,10 +19,16 @@ interface IUser {
   };
   orders?: [{ productName: string; price: number; quantity: number }];
 }
+// custom static method
 
-export type IUserMethods = {
+export interface UserModel extends Model<IUser> {
   isUserExists(userId: number): Promise<IUser | null>;
-};
+}
 
-export type UserModel = Model<IUser, Record<string, never>, IUserMethods>;
+// custom instance methods
+// export type IUserMethods = {
+//   isUserExists(userId: number): Promise<IUser | null>;
+// };
+
+// export type UserModel = Model<IUser>;
 export default IUser;

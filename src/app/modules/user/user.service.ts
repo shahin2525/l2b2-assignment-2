@@ -2,12 +2,16 @@ import IUser from './user.interface';
 import User from './user.model';
 
 const createUserIntoDB = async (userData: IUser) => {
-  // const result = await User.create(user);
-  const user = new User(userData);
-  if (await user.isUserExists(userData.userId)) {
-    throw new Error('user is already exists');
+  if (await User.isUserExists(userData.userId)) {
+    throw new Error('user already exists');
   }
-  const result = await user.save();
+  const result = await User.create(userData);
+  // const user = new User(userData);
+  // if (await user.isUserExists(userData.userId)) {
+  //   throw new Error('user is already exists');
+  // }
+  // const result = await user.save();
+
   return result;
 };
 const getAllUsersIntoDB = async () => {
@@ -15,6 +19,9 @@ const getAllUsersIntoDB = async () => {
   return result;
 };
 const getSingleUserIntoDB = async (userId: number) => {
+  if (await User.isUserExists(userId)) {
+    throw new Error('id does not exists');
+  }
   const result = User.findOne({ userId }).select('-password');
   return result;
 };
