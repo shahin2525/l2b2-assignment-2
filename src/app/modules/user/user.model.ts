@@ -1,6 +1,42 @@
 import { model, Schema } from 'mongoose';
 import IUser, { UserModel } from './user.interface';
 
+const fullNameSchema = new Schema({
+  firstName: {
+    type: String,
+    required: [true, 'firstName is required'], // Custom error message
+  },
+  lastName: {
+    type: String,
+    required: [true, 'lastName is required'], // Custom error message
+  },
+});
+const addressSchema = new Schema({
+  street: {
+    type: String,
+    required: [true, 'street is required'], // Custom error message
+  },
+  city: {
+    type: String,
+    required: [true, 'city is required'], // Custom error message
+  },
+  country: {
+    type: String,
+    required: [true, 'country is required'], // Custom error message
+  },
+});
+const orderSchema = new Schema({
+  productName: {
+    type: String,
+  },
+  price: {
+    type: Number,
+  },
+  quantity: {
+    type: Number,
+  },
+});
+
 const userSchema = new Schema<IUser, UserModel>({
   userId: {
     type: Number,
@@ -17,14 +53,7 @@ const userSchema = new Schema<IUser, UserModel>({
     required: [true, 'password is required'], // Custom error message
   },
   fullName: {
-    firstName: {
-      type: String,
-      required: [true, 'firstName is required'], // Custom error message
-    },
-    lastName: {
-      type: String,
-      required: [true, 'lastName is required'], // Custom error message
-    },
+    type: fullNameSchema,
   },
   age: {
     type: Number,
@@ -44,18 +73,10 @@ const userSchema = new Schema<IUser, UserModel>({
     required: [true, 'hobbies are required'], // Custom error message
   },
   address: {
-    street: {
-      type: String,
-      required: [true, 'street is required'], // Custom error message
-    },
-    city: {
-      type: String,
-      required: [true, 'city is required'], // Custom error message
-    },
-    country: {
-      type: String,
-      required: [true, 'country is required'], // Custom error message
-    },
+    type: addressSchema,
+  },
+  orders: {
+    type: [orderSchema],
   },
 });
 
@@ -64,12 +85,11 @@ userSchema.statics.isUserExists = async function (userId: number) {
 
   return existingUser;
 };
+userSchema.statics.doesUserExists = async function (userId: number) {
+  const existingUser = await User.findOne({ userId });
 
-// custom instance methods
-// userSchema.methods.isUserExists = async function (userId: number) {
-//   const existingUser = await User.findOne({ userId });
-//   return existingUser;
-// };
+  return !existingUser;
+};
 
 const User = model<IUser, UserModel>('User', userSchema);
 export default User;

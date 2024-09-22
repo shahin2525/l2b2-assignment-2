@@ -1,23 +1,29 @@
 import { Model } from 'mongoose';
-
+interface IFullName {
+  firstName: string;
+  lastName: string;
+}
+interface IAddress {
+  street: string;
+  city: string;
+  country: string;
+}
+interface IOrders {
+  productName: string;
+  price: number;
+  quantity: number;
+}
 interface IUser {
   userId: number;
   userName: string;
   password: string;
-  fullName: {
-    firstName: string;
-    lastName: string;
-  };
+  fullName: IFullName;
   age: number;
   email: string;
   isActive: boolean;
   hobbies: string[];
-  address: {
-    street: string;
-    city: string;
-    country: string;
-  };
-  orders?: [{ productName: string; price: number; quantity: number }];
+  address: IAddress;
+  orders?: [IOrders];
 }
 // custom static method
 
