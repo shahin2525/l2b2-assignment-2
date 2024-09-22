@@ -19,9 +19,6 @@ const getAllUsersIntoDB = async () => {
   return result;
 };
 const getSingleUserIntoDB = async (userId: number) => {
-  // if (await User.isUserExists(userId)) {
-  //   throw new Error('user not exists');
-  // }
   const result = await User.findOne({ userId }).select('-password');
   return result;
 };

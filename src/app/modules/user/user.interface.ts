@@ -24,6 +24,9 @@ interface IUser {
 export interface UserModel extends Model<IUser> {
   isUserExists(userId: number): Promise<IUser | null>;
 }
+export interface UserModel extends Model<IUser> {
+  doesUserExists(userId: number): Promise<boolean>;
+}
 
 // custom instance methods
 // export type IUserMethods = {
