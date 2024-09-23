@@ -28,12 +28,15 @@ const addressSchema = new Schema({
 const orderSchema = new Schema({
   productName: {
     type: String,
+    required: false, // Make productName optional
   },
   price: {
     type: Number,
+    required: false, // Make price optional
   },
   quantity: {
     type: Number,
+    required: false, // Make quantity optional
   },
 });
 

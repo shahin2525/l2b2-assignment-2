@@ -2,11 +2,12 @@
 import { Request, Response } from 'express';
 import { UserServices } from './user.service';
 import UserValidationSchema from './user.zod.validation';
+import IUser from './user.interface';
 
 const createUser = async (req: Request, res: Response) => {
   try {
     const user = req.body;
-    const validatedUser = UserValidationSchema.parse(user);
+    const validatedUser: IUser = UserValidationSchema.parse(user);
     const result = await UserServices.createUserIntoDB(validatedUser);
     res.status(201).json({
       success: 'true',
@@ -94,6 +95,24 @@ const deleteUser = async (req: Request, res: Response) => {
     });
   }
 };
+const addOrdersData = async (req: Request, res: Response) => {
+  try {
+    const userId = Number(req.params.userId);
+    const orders = req.body;
+    const result = await UserServices.addOrdersDataIntoDB(userId, orders);
+    res.status(201).json({
+      success: true,
+      message: ' user deleted successfully',
+      data: result,
+    });
+  } catch (err: any) {
+    res.status(501).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: err,
+    });
+  }
+};
 
 export const UserController = {
   createUser,
@@ -101,4 +120,5 @@ export const UserController = {
   getSingleUser,
   updateUser,
   deleteUser,
+  addOrdersData,
 };

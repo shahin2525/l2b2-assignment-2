@@ -9,9 +9,9 @@ interface IAddress {
   country: string;
 }
 interface IOrders {
-  productName: string;
-  price: number;
-  quantity: number;
+  productName?: string | undefined;
+  price?: number | undefined;
+  quantity?: number | undefined;
 }
 interface IUser {
   userId: number;
@@ -23,7 +23,7 @@ interface IUser {
   isActive: boolean;
   hobbies: string[];
   address: IAddress;
-  orders?: [IOrders];
+  orders?: IOrders[] | undefined;
 }
 // custom static method
 

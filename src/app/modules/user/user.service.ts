@@ -21,9 +21,9 @@ const getSingleUserIntoDB = async (userId: number) => {
   return result;
 };
 const deleteUserIntoDB = async (userId: number) => {
-  // if (await User.doesUserExists(userId)) {
-  //   throw new Error('user is does not exists');
-  // }
+  if (await User.doesUserExists(userId)) {
+    throw new Error('user is does not exists');
+  }
   const result = User.findOneAndDelete({ userId });
   return result;
 };
@@ -31,15 +31,9 @@ const UpdateUserIntoDB = async (
   userId: number,
   user: Partial<IUser>,
 ): Promise<IUser | null> => {
-  // : Promise<IUser | null>
-  // if (await User.doesUserExists(userId)) {
-  //   throw new Error('user is does not exists');
-  // }
-
-  // const result = await User.findByIdAndUpdate(userId, user, {
-  //   new: true,
-  //   runValidators: true,
-  // }).select({ password: 0, __v: 0, orders: 0 });
+  if (await User.doesUserExists(userId)) {
+    throw new Error('user is does not exists');
+  }
 
   const result = User.findOneAndUpdate(
     { userId },
@@ -49,6 +43,17 @@ const UpdateUserIntoDB = async (
 
   return result;
 };
+const addOrdersDataIntoDB = async (
+  userId: number,
+  ordersData: Partial<IUser>,
+) => {
+  const result = await User.findByIdAndUpdate(
+    { userId },
+    { $push: ordersData },
+    { new: true, runValidators: true },
+  );
+  return result;
+};
 
 export const UserServices = {
   createUserIntoDB,
@@ -56,4 +61,5 @@ export const UserServices = {
   getSingleUserIntoDB,
   deleteUserIntoDB,
   UpdateUserIntoDB,
+  addOrdersDataIntoDB,
 };
