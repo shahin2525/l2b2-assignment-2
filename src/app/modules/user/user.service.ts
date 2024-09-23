@@ -24,14 +24,14 @@ const deleteUserIntoDB = async (userId: number) => {
   if (await User.doesUserExists(userId)) {
     throw new Error('user is does not exists');
   }
-  const result = User.findByIdAndDelete(userId);
+  const result = User.findByIdAndDelete({ userId });
   return result;
 };
 const UpdateUserIntoDB = async (userId: number) => {
   if (await User.doesUserExists(userId)) {
     throw new Error('user is does not exists');
   }
-  const result = User.findByIdAndUpdate(userId).select('-password');
+  const result = User.findByIdAndUpdate({ userId }).select('-password');
   return result;
 };
 

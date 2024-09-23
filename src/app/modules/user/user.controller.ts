@@ -58,7 +58,7 @@ const getSingleUser = async (req: Request, res: Response) => {
 };
 const updateUser = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.params;
+    const userId = Number(req.params.userId);
     console.log(userId);
     // const result =
     await UserServices.UpdateUserIntoDB(userId);
@@ -77,7 +77,7 @@ const updateUser = async (req: Request, res: Response) => {
 };
 const deleteUser = async (req: Request, res: Response) => {
   try {
-    const userId = req.body;
+    const userId = Number(req.params.userId);
     await UserServices.deleteUserIntoDB(userId);
     res.status(201).json({
       success: true,
