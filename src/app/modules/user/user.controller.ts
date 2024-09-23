@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
 import { UserServices } from './user.service';
-import UserValidationSchema from './user.zod.validation';
+import UserValidationSchema from // OrdersValidationSchema,
+'./user.zod.validation';
 import IUser from './user.interface';
 
 const createUser = async (req: Request, res: Response) => {
@@ -99,10 +100,11 @@ const addOrdersData = async (req: Request, res: Response) => {
   try {
     const userId = Number(req.params.userId);
     const orders = req.body;
+    // const ordersValidation = OrdersValidationSchema.safeParse({orders:});
     const result = await UserServices.addOrdersDataIntoDB(userId, orders);
     res.status(201).json({
       success: true,
-      message: ' user deleted successfully',
+      message: ' order added successfully',
       data: result,
     });
   } catch (err: any) {
