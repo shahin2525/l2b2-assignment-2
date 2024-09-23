@@ -21,17 +21,32 @@ const getSingleUserIntoDB = async (userId: number) => {
   return result;
 };
 const deleteUserIntoDB = async (userId: number) => {
-  if (await User.doesUserExists(userId)) {
-    throw new Error('user is does not exists');
-  }
-  const result = User.findByIdAndDelete({ userId });
+  // if (await User.doesUserExists(userId)) {
+  //   throw new Error('user is does not exists');
+  // }
+  const result = User.findOneAndDelete({ userId });
   return result;
 };
-const UpdateUserIntoDB = async (userId: number) => {
-  if (await User.doesUserExists(userId)) {
-    throw new Error('user is does not exists');
-  }
-  const result = User.findByIdAndUpdate({ userId }).select('-password');
+const UpdateUserIntoDB = async (
+  userId: number,
+  user: Partial<IUser>,
+): Promise<IUser | null> => {
+  // : Promise<IUser | null>
+  // if (await User.doesUserExists(userId)) {
+  //   throw new Error('user is does not exists');
+  // }
+
+  // const result = await User.findByIdAndUpdate(userId, user, {
+  //   new: true,
+  //   runValidators: true,
+  // }).select({ password: 0, __v: 0, orders: 0 });
+
+  const result = User.findOneAndUpdate(
+    { userId },
+    { $set: user },
+    { new: true, runValidators: true },
+  ).select({ password: 0, __v: 0, orders: 0 });
+
   return result;
 };
 

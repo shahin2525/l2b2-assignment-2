@@ -58,14 +58,16 @@ const getSingleUser = async (req: Request, res: Response) => {
 };
 const updateUser = async (req: Request, res: Response) => {
   try {
+    // const userId = Number(req.params.userId);
     const userId = Number(req.params.userId);
-    console.log(userId);
+    const user = req.body;
+
     // const result =
-    await UserServices.UpdateUserIntoDB(userId);
+    const result = await UserServices.UpdateUserIntoDB(userId, user);
     res.status(201).json({
       success: true,
       message: ' user updated successfully',
-      data: userId,
+      data: result,
     });
   } catch (err: any) {
     res.status(501).json({
