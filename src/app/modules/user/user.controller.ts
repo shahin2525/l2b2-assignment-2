@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
 import { UserServices } from './user.service';
-import UserValidationSchema from // OrdersValidationSchema,
-'./user.zod.validation';
+import UserValidationSchema from './user.zod.validation'; // OrdersValidationSchema,
 import IUser from './user.interface';
+import { OrdersValidationSchema } from './user.order.validation';
 
 const createUser = async (req: Request, res: Response) => {
   try {
@@ -99,7 +99,10 @@ const deleteUser = async (req: Request, res: Response) => {
 const addOrdersData = async (req: Request, res: Response) => {
   try {
     const userId = Number(req.params.userId);
-    const orders = req.body;
+    const ordersData = req.body;
+    const orderValidation = OrdersValidationSchema.parse(ordersData);
+
+    const orders = [orderValidation];
     // const ordersValidation = OrdersValidationSchema.safeParse({orders:});
     const result = await UserServices.addOrdersDataIntoDB(userId, orders);
     res.status(201).json({

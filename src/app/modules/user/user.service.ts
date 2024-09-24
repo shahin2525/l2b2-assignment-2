@@ -1,6 +1,7 @@
-import IUser from './user.interface';
+import IUser, { IOrders } from './user.interface';
 import User from './user.model';
-import { OrdersValidationSchema } from './user.zod.validation';
+// import { OrdersValidationSchema } from './user.order.validation';
+// import { OrdersValidationSchema } from './user.zod.validation';
 
 const createUserIntoDB = async (userData: IUser) => {
   if (await User.isUserExists(userData.userId)) {
@@ -46,36 +47,17 @@ const UpdateUserIntoDB = async (
 };
 const addOrdersDataIntoDB = async (
   userId: number,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ordersData: any,
+
+  ordersData: IOrders,
 ): Promise<IUser | null> => {
-  // const validatedOrder = OrdersValidationSchema.safeParse({
-  //   orders: [ordersData],
-  // });
-  // if (!validatedOrder.success) {
-  //   throw new Error('data not validated');
-  // }
-
-  const validatedOrder = OrdersValidationSchema.parse({
-    orders: [ordersData],
-  });
-
-  // Check if validation was successful
-  // if (!validatedOrder.success) {
-  //   // Throw an error or handle the validation failure
-  //   throw new Error(
-  //     'Invalid order data: ' + JSON.stringify(validatedOrder.error.issues),
-  //   );
-  // }
-
   // Now you are guaranteed that validatedOrder.data exists and is correctly typed
-  const validatedOrderData = validatedOrder;
+
   if (await User.doesUserExists(userId)) {
     throw new Error('user does not exists');
   }
   const result = await User.findOneAndUpdate(
     { userId },
-    { $addToSet: { orders: validatedOrderData } },
+    { $addToSet: { orders: ordersData } },
     { new: true, runValidators: true },
   );
   return result;

@@ -1,16 +1,5 @@
 import { z } from 'zod';
 
-export const OrdersValidationSchema = z.object({
-  orders: z
-    .array(
-      z.object({
-        productName: z.string().optional(),
-        price: z.number().optional(),
-        quantity: z.number().optional(),
-      }),
-    )
-    .optional(),
-});
 // Zod validation schema for User
 const UserValidationSchema = z.object({
   userId: z.number().nonnegative({ message: 'userId is required' }),
@@ -29,15 +18,14 @@ const UserValidationSchema = z.object({
     city: z.string().nonempty({ message: 'city is required' }),
     country: z.string().nonempty({ message: 'country is required' }),
   }),
-  orders: z
-    .array(
-      z.object({
-        productName: z.string().optional(),
-        price: z.number().optional(),
-        quantity: z.number().optional(),
-      }),
-    )
-    .optional(),
+  orders: z.array(z.object({})).optional(),
+  //     z.object({
+  //       productName: z.string().optional(),
+  //       price: z.number().optional(),
+  //       quantity: z.number().optional(),
+  //     }),
+  //   )
+  //   .optional(),
 });
 
 export default UserValidationSchema;

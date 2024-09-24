@@ -8,7 +8,7 @@ interface IAddress {
   city: string;
   country: string;
 }
-interface IOrders {
+export interface IOrders {
   productName?: string | undefined;
   price?: number | undefined;
   quantity?: number | undefined;
@@ -23,7 +23,7 @@ interface IUser {
   isActive: boolean;
   hobbies: string[];
   address: IAddress;
-  orders?: IOrders[] | undefined;
+  orders?: IOrders[];
 }
 // custom static method
 
