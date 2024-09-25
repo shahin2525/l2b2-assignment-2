@@ -1,5 +1,7 @@
 import { model, Schema } from 'mongoose';
+import bcrypt from 'bcryptjs';
 import IUser, { UserModel } from './user.interface';
+import config from '../../config';
 
 const fullNameSchema = new Schema({
   firstName: {
@@ -94,14 +96,22 @@ userSchema.statics.doesUserExists = async function (userId: number) {
   return !existingUser;
 };
 
-userSchema.pre('save', function (next) {
-  this.password = '';
+// userSchema.post('save', function (next) {
+//   this.password = '';
 
+//   next();
+// });
+userSchema.post('save', function (doc, next) {
+  doc.password = '';
   next();
 });
 userSchema.pre('save', async function (next) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
   const user = this;
-  user.password = await bcrypt.hash(user.password);
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_rounds),
+  );
   next();
 });
 
