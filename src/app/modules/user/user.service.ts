@@ -52,14 +52,51 @@ const addOrdersDataIntoDB = async (
 ): Promise<IUser | null> => {
   // Now you are guaranteed that validatedOrder.data exists and is correctly typed
 
-  if (await User.doesUserExists(userId)) {
-    throw new Error('user does not exists');
-  }
   const result = await User.findOneAndUpdate(
     { userId },
     { $push: { orders: ordersData } },
     { new: true, runValidators: true },
   );
+  return result;
+};
+const getOrdersDataIntoDB = async (userId: number): Promise<IUser | null> => {
+  // Now you are guaranteed that validatedOrder.data exists and is correctly typed
+  // if (await User.doesUserExists(userId)) {
+  //   throw new Error('user does not found');
+  // }
+
+  const result = await User.findOne({ userId }).select({ orders: 1, _id: 0 });
+
+  return result;
+};
+const calculateOrdersDataIntoDB = async (userId: number) => {
+  // Now you are guaranteed that validatedOrder.data exists and is correctly typed
+  // if (await User.doesUserExists(userId)) {
+  //   throw new Error('user does not found');
+  // }
+
+  const result = await User.aggregate([
+    { $match: { userId } },
+
+    { $project: { orders: 1 } },
+
+    { $unwind: '$orders' },
+
+    {
+      $addFields: {
+        totalOrder: {
+          $multiply: ['$orders.price', '$orders.quantity'],
+        },
+      },
+    },
+
+    {
+      $group: {
+        _id: '$userId',
+        totalPrice: { $sum: '$totalOrder' },
+      },
+    },
+  ]);
   return result;
 };
 
@@ -70,4 +107,6 @@ export const UserServices = {
   deleteUserIntoDB,
   UpdateUserIntoDB,
   addOrdersDataIntoDB,
+  getOrdersDataIntoDB,
+  calculateOrdersDataIntoDB,
 };

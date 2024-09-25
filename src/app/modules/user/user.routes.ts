@@ -6,6 +6,11 @@ router.get('/api/users', UserController.getAllUsers);
 router.get('/api/users/:userId', UserController.getSingleUser);
 router.put('/api/users/:userId', UserController.updateUser);
 router.put('/api/users/:userId/orders', UserController.addOrdersData);
+router.get('/api/users/:userId/orders', UserController.getOrders);
+router.get(
+  '/api/users/:userId/orders/total-price',
+  UserController.TotalOrdersPrice,
+);
 router.delete('/api/users/:userId', UserController.deleteUser);
 
 export const StudentRoute = router;

@@ -108,26 +108,6 @@ const addOrdersData = async (req: Request, res: Response) => {
     }
     const orderData = req.body;
 
-    // const newOrder = {
-    //   productName,
-    //   price,
-    //   quantity,
-    // };
-
-    // if (user?.orders) {
-    //   user.orders.push(orderData);
-    // } else {
-    //   user.orders = [orderData];
-    // }
-    // const ordersValidation = OrdersValidationSchema.safeParse(newOrder);
-    // if (!ordersValidation.success) {
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: 'Invalid order data',
-    //     errors: ordersValidation.error.errors,
-    //   });
-    // }
-
     await UserServices.addOrdersDataIntoDB(userId, orderData);
 
     res.status(201).json({
@@ -144,6 +124,50 @@ const addOrdersData = async (req: Request, res: Response) => {
   }
 };
 
+const getOrders = async (req: Request, res: Response) => {
+  try {
+    const userId = Number(req.params.userId);
+    const user = await User.isUserExists(userId);
+    if (!user) {
+      throw new Error('user not found');
+    }
+
+    const result = await UserServices.getOrdersDataIntoDB(userId);
+    res.status(201).json({
+      success: true,
+      message: 'Orders get successfully',
+      data: result,
+    });
+  } catch (err: any) {
+    res.status(501).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: err,
+    });
+  }
+};
+const TotalOrdersPrice = async (req: Request, res: Response) => {
+  try {
+    const userId = Number(req.params.userId);
+    const user = await User.isUserExists(userId);
+    if (!user) {
+      throw new Error('user not found');
+    }
+
+    const result = await UserServices.calculateOrdersDataIntoDB(userId);
+    res.status(201).json({
+      success: true,
+      message: 'Orders get successfully',
+      data: result,
+    });
+  } catch (err: any) {
+    res.status(501).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: err,
+    });
+  }
+};
 export const UserController = {
   createUser,
   getAllUsers,
@@ -151,4 +175,6 @@ export const UserController = {
   updateUser,
   deleteUser,
   addOrdersData,
+  getOrders,
+  TotalOrdersPrice,
 };
