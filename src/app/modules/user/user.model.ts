@@ -99,6 +99,11 @@ userSchema.pre('save', function (next) {
 
   next();
 });
+userSchema.pre('save', async function (next) {
+  const user = this;
+  user.password = await bcrypt.hash(user.password);
+  next();
+});
 
 const User = model<IUser, UserModel>('User', userSchema);
 export default User;
