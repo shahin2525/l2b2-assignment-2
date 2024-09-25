@@ -57,7 +57,7 @@ const addOrdersDataIntoDB = async (
   }
   const result = await User.findOneAndUpdate(
     { userId },
-    { $addToSet: { orders: ordersData } },
+    { $push: { orders: ordersData } },
     { new: true, runValidators: true },
   );
   return result;

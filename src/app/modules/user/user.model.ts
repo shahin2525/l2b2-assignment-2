@@ -94,5 +94,11 @@ userSchema.statics.doesUserExists = async function (userId: number) {
   return !existingUser;
 };
 
+userSchema.pre('save', function (next) {
+  this.password = '';
+
+  next();
+});
+
 const User = model<IUser, UserModel>('User', userSchema);
 export default User;

@@ -8,10 +8,15 @@ interface IAddress {
   city: string;
   country: string;
 }
+// export interface IOrders {
+//   productName?: string | undefined;
+//   price?: number | undefined;
+//   quantity?: number | undefined;
+// }
 export interface IOrders {
-  productName?: string | undefined;
-  price?: number | undefined;
-  quantity?: number | undefined;
+  productName?: string;
+  price?: number;
+  quantity?: number;
 }
 interface IUser {
   userId: number;

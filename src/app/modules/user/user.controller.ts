@@ -3,7 +3,8 @@ import { Request, Response } from 'express';
 import { UserServices } from './user.service';
 import UserValidationSchema from './user.zod.validation'; // OrdersValidationSchema,
 import IUser from './user.interface';
-import { OrdersValidationSchema } from './user.order.validation';
+// import { OrdersValidationSchema } from './user.order.validation';
+import User from './user.model';
 
 const createUser = async (req: Request, res: Response) => {
   try {
@@ -99,16 +100,40 @@ const deleteUser = async (req: Request, res: Response) => {
 const addOrdersData = async (req: Request, res: Response) => {
   try {
     const userId = Number(req.params.userId);
-    const ordersData = req.body;
-    const orderValidation = OrdersValidationSchema.parse(ordersData);
+    const user = await User.isUserExists(userId);
 
-    const orders = [orderValidation];
-    // const ordersValidation = OrdersValidationSchema.safeParse({orders:});
-    const result = await UserServices.addOrdersDataIntoDB(userId, orders);
+    if (!user) {
+      // Throw a custom UserNotFoundError if the user doesn't exist
+      throw new Error('User not found');
+    }
+    const orderData = req.body;
+
+    // const newOrder = {
+    //   productName,
+    //   price,
+    //   quantity,
+    // };
+
+    // if (user?.orders) {
+    //   user.orders.push(orderData);
+    // } else {
+    //   user.orders = [orderData];
+    // }
+    // const ordersValidation = OrdersValidationSchema.safeParse(newOrder);
+    // if (!ordersValidation.success) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: 'Invalid order data',
+    //     errors: ordersValidation.error.errors,
+    //   });
+    // }
+
+    await UserServices.addOrdersDataIntoDB(userId, orderData);
+
     res.status(201).json({
       success: true,
       message: ' order added successfully',
-      data: result,
+      data: null,
     });
   } catch (err: any) {
     res.status(501).json({
